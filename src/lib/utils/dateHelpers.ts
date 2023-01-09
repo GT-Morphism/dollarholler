@@ -10,6 +10,9 @@ export const convertDate = (myDate: string): string => {
 	// break apart date
 	const [year, month, day] = myDate.split("-");
 	// return in correct format
+	if (!day || !month) {
+		return year || "No Due Date";
+	}
 	return `${parseInt(month)} / ${parseInt(day)} / ${year}`;
 };
 
@@ -21,6 +24,9 @@ export const convertDate = (myDate: string): string => {
 
 export const isLate = (myDate: string): boolean => {
 	const [year, month, day] = myDate.split("-");
+	if (!day || !month || !year) {
+		return false;
+	}
 	const dueDate = new Date(parseInt(year), parseInt(month), parseInt(day));
 	const today = new Date();
 	return isBefore(dueDate, today);
