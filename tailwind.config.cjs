@@ -37,7 +37,8 @@ module.exports = {
 				fog: "#decaec"
 			},
 			gridTemplateColumns: {
-				invoiceTable: "6.25rem 6.25rem 3.75rem 1fr 7.25rem 2rem 2rem"
+				invoiceTable: "6.25rem 6.25rem 3.75rem 1fr 7.25rem 2rem 2rem",
+				invoiceTableMobile: "1fr 5.625rem"
 			},
 			zIndex: {
 				navBarToggle: 91,
