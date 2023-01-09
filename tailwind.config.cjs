@@ -9,6 +9,17 @@ module.exports = {
 		},
 
 		extend: {
+			backgroundImage: {
+				circle: "url('/images/circle.svg')"
+			},
+			borderWidth: {
+				1: "1px"
+			},
+			boxShadow: {
+				colored: "0px 7px 16px rgba(127, 91, 220, 0.002)",
+				coloredHover: "0px 16px 25px rgba(127, 91, 220, 0.3)",
+				tableRow: "0px 0px 6px rgba(0, 0, 0, 0.16)"
+			},
 			colors: {
 				lavenderIndigo: "#8657e1",
 				daisyBush: "#4714a5",
@@ -24,6 +35,9 @@ module.exports = {
 				silver: "#c0c0c0",
 				gallery: "#efeaf2",
 				fog: "#decaec"
+			},
+			gridTemplateColumns: {
+				invoiceTable: "6.25rem 6.25rem 3.75rem 1fr 7.25rem 2rem 2rem"
 			},
 			zIndex: {
 				navBarToggle: 91,
