@@ -111,7 +111,7 @@
 				"zip": "56789"
 			},
 			"createdAt": "2022-07-01",
-			"dueDate": "2022-6-06",
+			"dueDate": "2022-06-06",
 			"id": "7",
 			"invoiceNumber": "12347",
 			"invoiceStatus": "sent",
@@ -136,12 +136,12 @@
 				"street": "789 Common Drive",
 				"zip": "56789"
 			},
-			"createdAt": "2022-07-06",
-			"dueDate": "2022-10-06",
+			"createdAt": "2023-07-06",
+			"dueDate": "2023-10-06",
 			"id": "5",
 			"invoiceNumber": "12348",
 			"invoiceStatus": "sent",
-			"issueDate": "2022-07-06",
+			"issueDate": "2023-07-06",
 			"lineItems": [
 				{
 					"amount": 1000000,

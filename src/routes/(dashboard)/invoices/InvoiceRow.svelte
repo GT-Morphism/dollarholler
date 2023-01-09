@@ -2,16 +2,29 @@
 	import ThreeDotsIcon from "$lib/components/Icon/ThreeDotsIcon.svelte";
 	import ViewIcon from "$lib/components/Icon/ViewIcon.svelte";
 	import Tag from "$lib/components/Tag.svelte";
+	import { convertDate, isLate } from "$lib/utils/dateHelpers";
 	import { centsToDollars, sumLineItems } from "$lib/utils/moneyHelpers";
 
 	export let invoice: Invoice;
+
+	const getInvoiceLable = () => {
+		if (invoice.invoiceStatus === "draft") {
+			return "draft";
+		} else if (invoice.invoiceStatus === "sent" && !isLate(invoice.dueDate)) {
+			return "sent";
+		} else if (invoice.invoiceStatus === "sent" && isLate(invoice.dueDate)) {
+			return "late";
+		} else if (invoice.invoiceStatus === "paid") {
+			return "paid";
+		}
+	};
 </script>
 
 <div
 	class="invoice-table invoice-row items-center rounded-lg bg-white py-3 shadow-tableRow lg:py-6"
 >
-	<div class="status"><Tag label={invoice.invoiceStatus} className="ml-auto lg:ml-0" /></div>
-	<div class="dueDate text-sm lg:text-lg">{invoice.dueDate}</div>
+	<div class="status"><Tag label={getInvoiceLable()} className="ml-auto lg:ml-0" /></div>
+	<div class="dueDate text-sm lg:text-lg">{convertDate(invoice.dueDate)}</div>
 	<div class="invoiceNumber text-sm lg:text-lg">{invoice.invoiceNumber}</div>
 	<div class="clientName truncate text-base font-bold lg:text-xl">
 		{invoice.client.name}
