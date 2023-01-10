@@ -1,21 +1,42 @@
 <script lang="ts">
+	import AdditionalOptions from "$lib/components/AdditionalOptions.svelte";
 	import ThreeDotsIcon from "$lib/components/Icon/ThreeDotsIcon.svelte";
 	import ViewIcon from "$lib/components/Icon/ViewIcon.svelte";
 	import Tag from "$lib/components/Tag.svelte";
 	import { convertDate, isLate } from "$lib/utils/dateHelpers";
 	import { centsToDollars, sumLineItems } from "$lib/utils/moneyHelpers";
+	import SendIcon from "$lib/components/Icon/SendIcon.svelte";
+	import EditIcon from "$lib/components/Icon/EditIcon.svelte";
+	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
 
 	export let invoice: Invoice;
+	let isAdditionalMenuShowing = false;
+	let isOptionsDisabled = false;
+
+	const handleSendInvoice = () => {
+		console.log("sending");
+	};
+	const handleEdit = () => {
+		console.log("editing");
+	};
+	const handleDelete = () => {
+		console.log("deleting");
+	};
 
 	const getInvoiceLable = () => {
 		if (invoice.invoiceStatus === "draft") {
 			return "draft";
 		} else if (invoice.invoiceStatus === "sent" && !isLate(invoice.dueDate)) {
+			isOptionsDisabled = true;
 			return "sent";
 		} else if (invoice.invoiceStatus === "sent" && isLate(invoice.dueDate)) {
+			isOptionsDisabled = true;
 			return "late";
 		} else if (invoice.invoiceStatus === "paid") {
+			isOptionsDisabled = true;
 			return "paid";
+		} else {
+			return "archive";
 		}
 	};
 </script>
@@ -32,11 +53,40 @@
 	<div class="amount text-right font-mono text-sm font-bold lg:text-lg">
 		${centsToDollars(sumLineItems(invoice.lineItems))}
 	</div>
-	<div class="viewButton hidden text-sm lg:block lg:text-lg">
+	<div class="lg:center viewButton hidden text-sm lg:text-lg">
 		<a href="#" class="text-pastelPurple hover:text-daisyBush"><ViewIcon /></a>
 	</div>
-	<div class="lg:center moreButton hidden text-sm lg:text-lg">
-		<button class="text-pastelPurple hover:text-daisyBush"><ThreeDotsIcon /></button>
+	<div class="lg:center moreButton relative hidden text-sm lg:text-lg">
+		<button
+			class="text-pastelPurple hover:text-daisyBush"
+			on:click={() => {
+				isAdditionalMenuShowing = !isAdditionalMenuShowing;
+			}}><ThreeDotsIcon /></button
+		>
+		{#if isAdditionalMenuShowing}
+			<AdditionalOptions
+				options={[
+					{
+						label: "Send",
+						icon: SendIcon,
+						onClick: handleSendInvoice,
+						disabled: isOptionsDisabled
+					},
+					{
+						label: "Edit",
+						icon: EditIcon,
+						onClick: handleEdit,
+						disabled: isOptionsDisabled
+					},
+					{
+						label: "Delete",
+						icon: TrashIcon,
+						onClick: handleDelete,
+						disabled: false
+					}
+				]}
+			/>
+		{/if}
 	</div>
 </div>
 
