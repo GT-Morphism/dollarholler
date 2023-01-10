@@ -10,7 +10,9 @@ module.exports = {
 
 		extend: {
 			backgroundImage: {
-				circle: "url('/images/circle.svg')"
+				circle: "url('/images/circle.svg')",
+				arrowRightUp: "url('/images/arrowRightUp.svg')",
+				arrowLeftUp: "url('/images/arrowLeftUp.svg')"
 			},
 			borderWidth: {
 				1: "1px"
@@ -34,7 +36,8 @@ module.exports = {
 				monsoon: "#777878",
 				silver: "#c0c0c0",
 				gallery: "#efeaf2",
-				fog: "#decaec"
+				fog: "#decaec",
+				prim: "#EDE4EE"
 			},
 			gridTemplateColumns: {
 				invoiceTable: "6.25rem 6.25rem 3.75rem 1fr 7.25rem 2rem 2rem",
