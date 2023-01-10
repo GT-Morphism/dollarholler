@@ -8,6 +8,9 @@
 	import BlankState from "./BlankState.svelte";
 	import InvoiceRowHeader from "./InvoiceRowHeader.svelte";
 	import Button from "$lib/components/Button.svelte";
+	import SlidePanel from "$lib/components/SlidePanel.svelte";
+
+	let isInvoiceFormShowing = false;
 
 	onMount(() => {
 		loadInvoices();
@@ -32,7 +35,7 @@
 		<Button
 			label="+ Invoice"
 			on:click={() => {
-				console.log("cool");
+				isInvoiceFormShowing = true;
 			}}
 		/>
 	</div>
@@ -56,3 +59,13 @@
 		<CircledAmount label="Total" amount={"$" + centsToDollars(sumInvoices($invoices))} />
 	{/if}
 </div>
+
+<!-- slide panel -->
+{#if isInvoiceFormShowing}
+	<SlidePanel
+		bind:isVisible={isInvoiceFormShowing}
+		on:click={() => {
+			isInvoiceFormShowing = false;
+		}}>NAISU</SlidePanel
+	>
+{/if}
