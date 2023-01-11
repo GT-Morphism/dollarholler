@@ -8,7 +8,7 @@
 	export let lineItem: LineItem;
 	export let canDelete = false;
 
-	let unitPrice = twoDecimals(lineItem.amount / lineItem.quantity);
+	let unitPrice = twoDecimals(lineItem.amount / lineItem.quantity) || "0.00";
 	let amount: string;
 
 	$: {
@@ -33,6 +33,9 @@
 			on:blur={() => {
 				unitPrice = twoDecimals(Number(unitPrice));
 			}}
+			on:input={() => {
+				dispatch("updateLineItem");
+			}}
 		/>
 	</div>
 
@@ -43,6 +46,9 @@
 			name="quantity"
 			min="0"
 			bind:value={lineItem.quantity}
+			on:input={() => {
+				dispatch("updateLineItem");
+			}}
 		/>
 	</div>
 

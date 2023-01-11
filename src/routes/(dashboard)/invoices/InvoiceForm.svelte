@@ -20,6 +20,12 @@
 	const removeLineItem = (event: CustomEvent) => {
 		lineItems = lineItems.filter((item) => item.id !== event.detail);
 	};
+
+	const updateLineItem = () => {
+		// To enforce svelte to update "subtotal" when unit price or quantity
+		// of line item changes (inside LineItemRow);
+		lineItems = lineItems;
+	};
 </script>
 
 <h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
@@ -63,7 +69,12 @@
 
 	<!-- line items -->
 	<div class="field col-span-6">
-		<LineItemRows {lineItems} on:addLineItem={addLineItem} on:removeLineItem={removeLineItem} />
+		<LineItemRows
+			{lineItems}
+			on:addLineItem={addLineItem}
+			on:removeLineItem={removeLineItem}
+			on:updateLineItem={updateLineItem}
+		/>
 	</div>
 
 	<!-- notes -->
