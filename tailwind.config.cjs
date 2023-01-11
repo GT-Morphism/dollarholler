@@ -45,6 +45,7 @@ module.exports = {
 				prim: "#EDE4EE"
 			},
 			gridTemplateColumns: {
+				invoiceLineItem: "1fr 6.25rem 6.25rem 6.25rem 4.0625rem",
 				invoiceTable: "6.25rem 6.25rem 3.75rem 1fr 7.25rem 2rem 2rem",
 				invoiceTableMobile: "1fr 5.625rem"
 			},

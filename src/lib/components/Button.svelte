@@ -3,7 +3,13 @@
 
 	export let label = "";
 	export let isAnimated = true;
-	export let style: "primary" | "secondary" | "destructive" | "outline" | "textOnly" = "primary";
+	export let style:
+		| "primary"
+		| "secondary"
+		| "destructive"
+		| "outline"
+		| "textOnly"
+		| "textOnlyDestructive" = "primary";
 
 	export let iconLeft: typeof SvelteComponent | null = null;
 	export let iconRight: typeof SvelteComponent | null = null;
@@ -17,6 +23,7 @@
 	class:secondary={style === "secondary"}
 	class:outline={style === "outline"}
 	class:textOnly={style === "textOnly"}
+	class:textOnlyDestructive={style === "textOnlyDestructive"}
 	class:destructive={style === "destructive"}
 >
 	{#if iconLeft}
@@ -48,6 +55,10 @@
 	}
 
 	.textOnly {
+		@apply bg-transparent px-0 text-lavenderIndigo hover:underline;
+	}
+
+	.textOnlyDestructive {
 		@apply bg-transparent px-0 text-scarlet underline hover:no-underline;
 	}
 

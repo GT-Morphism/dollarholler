@@ -1,6 +1,16 @@
 <script>
 	import Button from "$lib/components/Button.svelte";
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
+	import LineItemRows from "./LineItemRows.svelte";
+
+	const blankLineItem = [
+		{
+			id: "1",
+			description: "",
+			quantity: 0,
+			amount: 0
+		}
+	];
 </script>
 
 <h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
@@ -38,7 +48,7 @@
 		<input type="text" name="subject" />
 	</div>
 	<!-- line items -->
-	<div class="field col-span-6">Line Items</div>
+	<div class="field col-span-6"><LineItemRows lineItems={blankLineItem} /></div>
 	<!-- notes -->
 	<div class="field col-span-6">
 		<label for="notes"
@@ -60,7 +70,7 @@
 	<div class="field col-span-1">
 		<!-- only visible if editing -->
 		<Button
-			style="textOnly"
+			style="textOnlyDestructive"
 			label="Delete"
 			isAnimated={false}
 			on:click={() => {}}
@@ -69,6 +79,6 @@
 	</div>
 	<div class="field col-span-4 flex justify-end gap-x-5">
 		<Button style="secondary" label="Cancel" isAnimated={false} on:click={() => {}} />
-		<Button label="save" on:click={() => {}} />
+		<Button label="Save" on:click={() => {}} />
 	</div>
 </form>
