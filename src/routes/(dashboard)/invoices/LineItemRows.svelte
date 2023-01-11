@@ -9,16 +9,27 @@
 	let dispatch = createEventDispatcher();
 </script>
 
+<!-- <svelte:window
+	on:keydown={(event) => {
+		if (event.key === "Enter") {
+			dispatch("addLineItem");
+		}
+	}}
+/> -->
+
 <div class="invoice-line-item border-b-2 border-daisyBush pb-2">
 	<div class="table-header">Description</div>
+
 	<div class="table-header text-right">Unit Price</div>
+
 	<div class="table-header text-center">Qty</div>
+
 	<div class="table-header text-right">Amount</div>
 </div>
 
 {#if lineItems}
-	{#each lineItems as lineItem}
-		<LineItemRow {lineItem} on:removeLineItem />
+	{#each lineItems as lineItem, index}
+		<LineItemRow {lineItem} on:removeLineItem canDelete={index > 0} />
 	{/each}
 {/if}
 
