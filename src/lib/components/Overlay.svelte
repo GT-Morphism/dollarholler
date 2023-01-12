@@ -1,3 +1,7 @@
+<script lang="ts">
+	export let overlayZIndex: string = "z-overlay";
+</script>
+
 <svelte:head>
 	<style lang="postcss">
 		body {
@@ -6,4 +10,4 @@
 	</style>
 </svelte:head>
 
-<div class="fixed inset-0 z-overlay bg-blueGem opacity-60" />
+<div class="fixed inset-0 {overlayZIndex} bg-blueGem opacity-60" />

@@ -8,7 +8,8 @@
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
 	import LineItemRows from "./LineItemRows.svelte";
 	import { today } from "$lib/utils/dateHelpers";
-	import { addInvoice } from "$lib/stores/invoiceStore";
+	import { addInvoice, updateInvoice } from "$lib/stores/invoiceStore";
+	import ConfirmDelete from "./ConfirmDelete.svelte";
 
 	const blankLineItem: LineItem = {
 		id: uuid(),
@@ -18,12 +19,14 @@
 	};
 
 	export let closePanel: () => void = () => {};
-
-	let isNewClient: boolean = false;
-	let invoice: Invoice = {
+	export let formState: "create" | "edit" = "create";
+	export let invoice: Invoice = {
 		client: {} as Client,
 		lineItems: [{ ...blankLineItem }] as LineItem[]
 	} as Invoice;
+
+	let isNewClient: boolean = false;
+	let isModalShowing: boolean = false;
 	let lineItems: LineItem[] = invoice.lineItems as LineItem[];
 	let newClient: Partial<Client> = {};
 
@@ -47,8 +50,11 @@
 			addClient(newClient as Client);
 		}
 
-		addInvoice(invoice);
-
+		if (formState === "create") {
+			addInvoice(invoice);
+		} else {
+			updateInvoice(invoice);
+		}
 		closePanel();
 	};
 
@@ -57,7 +63,13 @@
 	});
 </script>
 
-<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
+<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">
+	{#if formState === "create"}
+		Add an Invoice
+	{:else}
+		Edit Invoice for {invoice.client.name}
+	{/if}
+</h2>
 
 <form class="grid grid-cols-6 gap-x-5" on:submit|preventDefault={handleSubmit}>
 	<!-- client -->
@@ -205,21 +217,27 @@
 	</div>
 
 	<!-- buttons -->
-	<div class="field col-span-1">
+	<div class="field col-span-2">
 		<!-- only visible if editing -->
-		<Button
-			style="textOnlyDestructive"
-			label="Delete"
-			isAnimated={false}
-			on:click={() => {}}
-			iconLeft={TrashIcon}
-		/>
+		{#if formState === "edit"}
+			<Button
+				style="textOnlyDestructive"
+				label="Delete"
+				isAnimated={false}
+				on:click={() => {
+					isModalShowing = true;
+				}}
+				iconLeft={TrashIcon}
+			/>
+		{/if}
 	</div>
 	<div class="field col-span-4 flex justify-end gap-x-5">
-		<Button style="secondary" label="Cancel" isAnimated={false} on:click={closePanel()} />
+		<Button style="secondary" label="Cancel" isAnimated={false} on:click={closePanel} />
 		<button
 			class="button translate-y-0 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover"
 			type="submit">Save</button
 		>
 	</div>
 </form>
+
+<ConfirmDelete {invoice} bind:isDeleteModalShowing={isModalShowing} {closePanel} />

@@ -21,7 +21,7 @@
 <div class="invoice-line-item border-b-2 border-fog py-2">
 	<div>
 		<input
-			class="line-item"
+			class="line-item truncate"
 			type="text"
 			name="description"
 			bind:value={lineItem.description}

@@ -8,22 +8,25 @@
 	import SendIcon from "$lib/components/Icon/SendIcon.svelte";
 	import EditIcon from "$lib/components/Icon/EditIcon.svelte";
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
-	import Modal from "$lib/components/Modal.svelte";
-	import Button from "$lib/components/Button.svelte";
-	import { deleteInvoice } from "$lib/stores/invoiceStore";
-	import { isBefore } from "date-fns";
+	import SlidePanel from "$lib/components/SlidePanel.svelte";
+	import InvoiceForm from "./InvoiceForm.svelte";
+	import ConfirmDelete from "./ConfirmDelete.svelte";
 
 	export let invoice: Invoice;
-	let isAdditionalMenuShowing = false;
-	let isOptionsDisabled = false;
-	let isModalShowing = false;
+	let isAdditionalMenuShowing: boolean = false;
+	let isOptionsDisabled: boolean = false;
+	let isModalShowing: boolean = false;
+	let isInvoiceFormShowing: boolean = false;
 
 	const handleSendInvoice = () => {
 		console.log("sending");
 	};
+
 	const handleEdit = () => {
-		console.log("editing");
+		isInvoiceFormShowing = true;
+		isAdditionalMenuShowing = false;
 	};
+
 	const handleDelete = () => {
 		isModalShowing = true;
 		isAdditionalMenuShowing = false;
@@ -96,36 +99,26 @@
 	</div>
 </div>
 
-<Modal bind:isVisible={isModalShowing}>
-	<div class="flex flex-col items-center justify-between gap-6">
-		<div class="text-center text-xl font-bold text-daisyBush">
-			Are you sure you want to delete this invoice to <span class="text-scarlet"
-				>{invoice.client.name}</span
-			>
-			for
-			<span class="text-scarlet">${centsToDollars(sumLineItems(invoice.lineItems))}</span> ?
-		</div>
-		<div class="flex gap-x-4">
-			<Button
-				label="Cancel"
-				isAnimated={false}
-				style="secondary"
-				on:click={() => {
-					isModalShowing = false;
-				}}
-			/>
-			<Button
-				label="Yes, Delete It"
-				isAnimated={false}
-				style="destructive"
-				on:click={() => {
-					deleteInvoice(invoice);
-					isModalShowing = false;
-				}}
-			/>
-		</div>
-	</div>
-</Modal>
+<!-- confirm delete modal -->
+<ConfirmDelete {invoice} bind:isDeleteModalShowing={isModalShowing} />
+
+<!-- slide panel -->
+{#if isInvoiceFormShowing}
+	<SlidePanel
+		bind:isVisible={isInvoiceFormShowing}
+		on:click={() => {
+			isInvoiceFormShowing = false;
+		}}
+	>
+		<InvoiceForm
+			formState="edit"
+			{invoice}
+			closePanel={() => {
+				isInvoiceFormShowing = false;
+			}}
+		/>
+	</SlidePanel>
+{/if}
 
 <style lang="postcss">
 	.invoice-row {
