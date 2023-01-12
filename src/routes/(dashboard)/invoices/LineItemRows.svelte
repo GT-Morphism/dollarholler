@@ -44,7 +44,13 @@
 
 {#if lineItems}
 	{#each lineItems as lineItem, index}
-		<LineItemRow {lineItem} on:removeLineItem on:updateLineItem canDelete={index > 0} />
+		<LineItemRow
+			{lineItem}
+			on:removeLineItem
+			on:updateLineItem
+			canDelete={index > 0}
+			isRequired={index === 0}
+		/>
 	{/each}
 {/if}
 

@@ -7,8 +7,9 @@
 	import Button from "$lib/components/Button.svelte";
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
 	import LineItemRows from "./LineItemRows.svelte";
+	import { today } from "$lib/utils/dateHelpers";
 
-	const blankLineItem = {
+	const blankLineItem: LineItem = {
 		id: uuid(),
 		description: "",
 		quantity: 0,
@@ -16,7 +17,7 @@
 	};
 
 	let lineItems: LineItem[] = [{ ...blankLineItem }];
-	let isNewClient = false;
+	let isNewClient: boolean = false;
 
 	const addLineItem = () => {
 		lineItems = [...lineItems, { ...blankLineItem, id: uuid() }];
@@ -62,7 +63,7 @@
 				/>
 			</div>
 		{:else}
-			<label for="newClient">New Client</label>
+			<label for="newClient">New Client's Name</label>
 			<div class="flex items-end gap-x-5">
 				<input type="text" name="newClient" />
 				<div class="text-base font-bold leading-[3.5rem] text-monsoon">or</div>
@@ -80,8 +81,8 @@
 
 	<!-- invoice id -->
 	<div class="field col-span-2">
-		<label for="id">Invoice ID</label>
-		<input type="number" name="id" />
+		<label for="invoiceNumber">Invoice ID</label>
+		<input type="number" name="invoiceNumber" required />
 	</div>
 
 	<!-- new client -->
@@ -122,13 +123,13 @@
 	<!-- due date -->
 	<div class="field col-span-2">
 		<label for="dueDate">Due Date</label>
-		<input type="date" name="dueDate" />
+		<input type="date" name="dueDate" min={today} required />
 	</div>
 
 	<!-- issue date -->
 	<div class="field col-span-2 col-start-5">
 		<label for="issueDate">Issue Date</label>
-		<input type="date" name="issueDate" />
+		<input type="date" name="issueDate" min={today} />
 	</div>
 
 	<!-- subject -->
@@ -179,6 +180,9 @@
 	</div>
 	<div class="field col-span-4 flex justify-end gap-x-5">
 		<Button style="secondary" label="Cancel" isAnimated={false} on:click={() => {}} />
-		<Button label="Save" on:click={() => {}} />
+		<button
+			class="button translate-y-0 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover"
+			type="submit">Save</button
+		>
 	</div>
 </form>

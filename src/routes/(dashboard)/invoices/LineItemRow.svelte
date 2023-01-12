@@ -6,7 +6,8 @@
 	let dispatch = createEventDispatcher();
 
 	export let lineItem: LineItem;
-	export let canDelete = false;
+	export let canDelete: boolean = false;
+	export let isRequired: boolean = false;
 
 	let unitPrice = twoDecimals(lineItem.amount / lineItem.quantity) || "0.00";
 	let amount: string;
@@ -19,7 +20,13 @@
 
 <div class="invoice-line-item border-b-2 border-fog py-2">
 	<div>
-		<input class="line-item" type="text" name="description" bind:value={lineItem.description} />
+		<input
+			class="line-item"
+			type="text"
+			name="description"
+			bind:value={lineItem.description}
+			required={isRequired}
+		/>
 	</div>
 
 	<div>
@@ -29,6 +36,7 @@
 			name="unitPrice"
 			step="0.01"
 			min="0"
+			required={isRequired}
 			bind:value={unitPrice}
 			on:blur={() => {
 				unitPrice = twoDecimals(Number(unitPrice));
@@ -45,6 +53,7 @@
 			type="number"
 			name="quantity"
 			min="0"
+			required={isRequired}
 			bind:value={lineItem.quantity}
 			on:input={() => {
 				dispatch("updateLineItem");
