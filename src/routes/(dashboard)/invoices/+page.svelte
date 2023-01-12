@@ -67,6 +67,11 @@
 		bind:isVisible={isInvoiceFormShowing}
 		on:click={() => {
 			isInvoiceFormShowing = false;
-		}}><InvoiceForm /></SlidePanel
-	>
+		}}
+		><InvoiceForm
+			closePanel={() => {
+				isInvoiceFormShowing = false;
+			}}
+		/>
+	</SlidePanel>
 {/if}

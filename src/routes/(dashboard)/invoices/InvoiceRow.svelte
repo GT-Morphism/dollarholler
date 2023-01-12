@@ -11,6 +11,7 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import { deleteInvoice } from "$lib/stores/invoiceStore";
+	import { isBefore } from "date-fns";
 
 	export let invoice: Invoice;
 	let isAdditionalMenuShowing = false;
@@ -41,7 +42,7 @@
 			isOptionsDisabled = true;
 			return "paid";
 		} else {
-			return "archive";
+			return "draft";
 		}
 	};
 </script>

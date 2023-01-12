@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clients, loadClients } from "$lib/stores/clientStore";
+	import { addClient, clients, loadClients } from "$lib/stores/clientStore";
 	import { onMount } from "svelte";
 	import { slide } from "svelte/transition";
 	import { v4 as uuid } from "uuid";
@@ -8,6 +8,7 @@
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
 	import LineItemRows from "./LineItemRows.svelte";
 	import { today } from "$lib/utils/dateHelpers";
+	import { addInvoice } from "$lib/stores/invoiceStore";
 
 	const blankLineItem: LineItem = {
 		id: uuid(),
@@ -16,8 +17,15 @@
 		amount: 0
 	};
 
-	let lineItems: LineItem[] = [{ ...blankLineItem }];
+	export let closePanel: () => void = () => {};
+
 	let isNewClient: boolean = false;
+	let invoice: Invoice = {
+		client: {} as Client,
+		lineItems: [{ ...blankLineItem }] as LineItem[]
+	} as Invoice;
+	let lineItems: LineItem[] = invoice.lineItems as LineItem[];
+	let newClient: Partial<Client> = {};
 
 	const addLineItem = () => {
 		lineItems = [...lineItems, { ...blankLineItem, id: uuid() }];
@@ -33,6 +41,17 @@
 		lineItems = lineItems;
 	};
 
+	const handleSubmit = () => {
+		if (isNewClient) {
+			invoice.client = newClient as Client;
+			addClient(newClient as Client);
+		}
+
+		addInvoice(invoice);
+
+		closePanel();
+	};
+
 	onMount(() => {
 		loadClients();
 	});
@@ -40,13 +59,22 @@
 
 <h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
 
-<form class="grid grid-cols-6 gap-x-5">
+<form class="grid grid-cols-6 gap-x-5" on:submit|preventDefault={handleSubmit}>
 	<!-- client -->
 	<div class="field col-span-4">
 		{#if !isNewClient}
 			<label for="client">Client</label>
 			<div class="flex items-end gap-x-5">
-				<select name="client" id="client" required={!isNewClient}>
+				<select
+					name="client"
+					id="client"
+					required={!isNewClient}
+					bind:value={invoice.client.id}
+					on:change={() => {
+						const selectedClient = $clients.find((client) => client.id === invoice.client.id);
+						invoice.client.name = selectedClient?.name !== undefined ? selectedClient.name : "";
+					}}
+				>
 					<option />
 					{#each $clients as client}
 						<option value={client.id}>{client.name}</option>
@@ -59,13 +87,14 @@
 					isAnimated={false}
 					on:click={() => {
 						isNewClient = true;
+						invoice.client.id = "";
 					}}
 				/>
 			</div>
 		{:else}
 			<label for="newClient">New Client's Name</label>
 			<div class="flex items-end gap-x-5">
-				<input type="text" name="newClient" required={isNewClient} />
+				<input type="text" name="newClient" required={isNewClient} bind:value={newClient.name} />
 				<div class="text-base font-bold leading-[3.5rem] text-monsoon">or</div>
 				<Button
 					style="outline"
@@ -73,6 +102,7 @@
 					isAnimated={false}
 					on:click={() => {
 						isNewClient = false;
+						newClient = {};
 					}}
 				/>
 			</div>
@@ -82,7 +112,7 @@
 	<!-- invoice id -->
 	<div class="field col-span-2">
 		<label for="invoiceNumber">Invoice ID</label>
-		<input type="number" name="invoiceNumber" required />
+		<input type="number" name="invoiceNumber" required bind:value={invoice.invoiceNumber} />
 	</div>
 
 	<!-- new client -->
@@ -90,22 +120,28 @@
 		<div class="field col-span-6 grid gap-x-5" transition:slide>
 			<div class="field col-span-6">
 				<label for="email">Client's Email</label>
-				<input type="email" name="email" id="email" required={isNewClient} />
+				<input
+					type="email"
+					name="email"
+					id="email"
+					required={isNewClient}
+					bind:value={newClient.email}
+				/>
 			</div>
 
 			<div class="field col-span-6">
 				<label for="street">Client's Street</label>
-				<input type="text" name="street" id="street" />
+				<input type="text" name="street" id="street" bind:value={newClient.street} />
 			</div>
 
 			<div class="field col-span-2">
 				<label for="city">Client's City</label>
-				<input type="text" name="city" id="city" />
+				<input type="text" name="city" id="city" bind:value={newClient.city} />
 			</div>
 
 			<div class="field col-span-2">
 				<label for="state">Client's State</label>
-				<select name="state" id="state">
+				<select name="state" id="state" bind:value={newClient.state}>
 					<option />
 					{#each states as state}
 						<option value={state.value}>{state.name}</option>
@@ -115,7 +151,7 @@
 
 			<div class="field col-span-2">
 				<label for="zip">Client's Zip</label>
-				<input type="text" name="zip" id="zip" />
+				<input type="text" name="zip" id="zip" bind:value={newClient.zip} />
 			</div>
 		</div>
 	{/if}
@@ -123,24 +159,25 @@
 	<!-- due date -->
 	<div class="field col-span-2">
 		<label for="dueDate">Due Date</label>
-		<input type="date" name="dueDate" min={today} required />
+		<input type="date" name="dueDate" min={today} required bind:value={invoice.dueDate} />
 	</div>
 
 	<!-- issue date -->
 	<div class="field col-span-2 col-start-5">
 		<label for="issueDate">Issue Date</label>
-		<input type="date" name="issueDate" min={today} />
+		<input type="date" name="issueDate" min={today} bind:value={invoice.issueDate} />
 	</div>
 
 	<!-- subject -->
 	<div class="field col-span-6">
 		<label for="subject">Subject</label>
-		<input type="text" name="subject" />
+		<input type="text" name="subject" bind:value={invoice.subject} />
 	</div>
 
 	<!-- line items -->
 	<div class="field col-span-6">
 		<LineItemRows
+			discount={invoice.discount}
 			{lineItems}
 			on:addLineItem={addLineItem}
 			on:removeLineItem={removeLineItem}
@@ -153,7 +190,7 @@
 		<label for="notes"
 			>Notes <span class="font-normal">(optional, displayed on invoice)</span></label
 		>
-		<textarea name="notes" id="notes" />
+		<textarea name="notes" id="notes" bind:value={invoice.notes} />
 	</div>
 
 	<!-- terms -->
@@ -161,7 +198,7 @@
 		<label for="terms"
 			>Terms <span class="font-normal">(optional, enter your terms and conditions)</span></label
 		>
-		<textarea name="terms" id="terms" />
+		<textarea name="terms" id="terms" bind:value={invoice.terms} />
 		<div class="text-xs text-gray-400">
 			Formatting tips: <strong>*bold*</strong>, <em>_italics_</em>
 		</div>
@@ -179,7 +216,7 @@
 		/>
 	</div>
 	<div class="field col-span-4 flex justify-end gap-x-5">
-		<Button style="secondary" label="Cancel" isAnimated={false} on:click={() => {}} />
+		<Button style="secondary" label="Cancel" isAnimated={false} on:click={closePanel()} />
 		<button
 			class="button translate-y-0 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover"
 			type="submit">Save</button

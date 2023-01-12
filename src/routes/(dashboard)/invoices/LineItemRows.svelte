@@ -9,7 +9,7 @@
 
 	let dispatch = createEventDispatcher();
 	let subtotal = "0.00";
-	let discount: number;
+	export let discount: number | undefined = 0;
 	let discountedAmount: string = "0.00";
 	let totalAmount: string = "0.00";
 
