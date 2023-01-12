@@ -26,6 +26,6 @@ interface Client {
 	id: string;
 	name: string;
 	state: string;
-	street: string;
+	street?: string;
 	zip: string;
 }
