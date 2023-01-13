@@ -2,6 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import { deleteInvoice } from "$lib/stores/invoiceStore";
+	import { snackbar } from "$lib/stores/snackbarStore";
 	import { centsToDollars, sumLineItems } from "$lib/utils/moneyHelpers";
 
 	export let isDeleteModalShowing: boolean = false;
@@ -35,6 +36,10 @@
 					deleteInvoice(invoice);
 					isDeleteModalShowing = false;
 					closePanel();
+					snackbar.send({
+						message: "Your invoice was successfully deleted",
+						type: "success"
+					});
 				}}
 			/>
 		</div>

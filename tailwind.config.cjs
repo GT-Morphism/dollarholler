@@ -50,6 +50,7 @@ module.exports = {
 				invoiceTableMobile: "1fr 5.625rem"
 			},
 			zIndex: {
+				toaster: 1000,
 				modal: 999,
 				modalOverlay: 998,
 				slidePanel: 998,

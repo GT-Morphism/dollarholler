@@ -10,6 +10,7 @@
 	import { today } from "$lib/utils/dateHelpers";
 	import { addInvoice, updateInvoice } from "$lib/stores/invoiceStore";
 	import ConfirmDelete from "./ConfirmDelete.svelte";
+	import { snackbar } from "$lib/stores/snackbarStore";
 
 	const blankLineItem: LineItem = {
 		id: uuid(),
@@ -52,8 +53,16 @@
 
 		if (formState === "create") {
 			addInvoice(invoice);
+			snackbar.send({
+				message: "Your invoice was successfully created",
+				type: "success"
+			});
 		} else {
 			updateInvoice(invoice);
+			snackbar.send({
+				message: "Your invoice was successfully updated",
+				type: "success"
+			});
 		}
 		closePanel();
 	};
