@@ -7,6 +7,10 @@ export const loadInvoices = () => {
 	invoices.set(data.invoices);
 };
 
+export const getInvoiceById = (id: string): Invoice | undefined => {
+	return data.invoices.find((invoice: Invoice) => invoice.id === id);
+};
+
 export const addInvoice = (invoiceToAdd: Invoice) => {
 	invoices.update((prev: Invoice[]) => [...prev, invoiceToAdd]);
 	return invoiceToAdd;
