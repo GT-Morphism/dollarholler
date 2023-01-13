@@ -189,7 +189,7 @@
 	<!-- line items -->
 	<div class="field col-span-6">
 		<LineItemRows
-			discount={invoice.discount}
+			bind:discount={invoice.discount}
 			{lineItems}
 			on:addLineItem={addLineItem}
 			on:removeLineItem={removeLineItem}

@@ -10,6 +10,26 @@ export const sumLineItems = (lineItems: LineItem[] | undefined): number => {
 };
 
 /**
+ * Takes lineIitems and discount and determines invoice total
+ * @param 	{Array|undefined} 	lineItems
+ * @param 	{number|undefined} 	discount
+ * @returns {number}
+ */
+
+export const invoiceTotal = (
+	lineItems: LineItem[] | undefined,
+	discount: number | undefined
+): number => {
+	const lineItemsSum: number = sumLineItems(lineItems);
+	if (discount) {
+		const invoiceDiscount: number = lineItemsSum * (discount / 100);
+		return lineItemsSum - invoiceDiscount;
+	}
+
+	return lineItemsSum;
+};
+
+/**
  * Takes and return a dollar amount, formatted with commas and 2 decimal places
  * @param   {number} cents
  * @returns {string}

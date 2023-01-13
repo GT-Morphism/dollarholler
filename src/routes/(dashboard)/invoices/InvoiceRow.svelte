@@ -4,7 +4,7 @@
 	import ViewIcon from "$lib/components/Icon/ViewIcon.svelte";
 	import Tag from "$lib/components/Tag.svelte";
 	import { convertDate, isLate } from "$lib/utils/dateHelpers";
-	import { centsToDollars, sumLineItems } from "$lib/utils/moneyHelpers";
+	import { centsToDollars, invoiceTotal, sumLineItems } from "$lib/utils/moneyHelpers";
 	import SendIcon from "$lib/components/Icon/SendIcon.svelte";
 	import EditIcon from "$lib/components/Icon/EditIcon.svelte";
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
@@ -60,7 +60,7 @@
 		{invoice.client.name}
 	</div>
 	<div class="amount text-right font-mono text-sm font-bold lg:text-lg">
-		${centsToDollars(sumLineItems(invoice.lineItems))}
+		${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
 	</div>
 	<div class="lg:center viewButton hidden text-sm lg:text-lg">
 		<a href="#" class="text-pastelPurple hover:text-daisyBush"><ViewIcon /></a>

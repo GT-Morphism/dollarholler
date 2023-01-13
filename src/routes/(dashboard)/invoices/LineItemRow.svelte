@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
-	import { twoDecimals, dollarsToCents } from "$lib/utils/moneyHelpers";
+	import { twoDecimals, dollarsToCents, centsToDollars } from "$lib/utils/moneyHelpers";
 
 	let dispatch = createEventDispatcher();
 
@@ -9,7 +9,7 @@
 	export let canDelete: boolean = false;
 	export let isRequired: boolean = false;
 
-	let unitPrice = twoDecimals(lineItem.amount / lineItem.quantity) || "0.00";
+	let unitPrice = centsToDollars(lineItem.amount / lineItem.quantity) || "0.00";
 	let amount: string;
 
 	$: {
