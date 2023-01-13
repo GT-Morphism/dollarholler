@@ -6,7 +6,5 @@ export const load = (({ params }) => {
 
 	const invoice = getInvoiceById(id);
 
-	console.log({ invoice });
-
 	return invoice;
 }) satisfies PageLoad;
