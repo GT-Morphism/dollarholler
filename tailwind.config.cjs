@@ -14,6 +14,7 @@ module.exports = {
 				arrowRightUp: "url('/images/arrowRightUp.svg')",
 				arrowLeftUp: "url('/images/arrowLeftUp.svg')",
 				chevronDown: "url('/images/chevronDown.svg')",
+				error404: "url('/images/bg-404.svg')",
 				thankYou: "url('/images/bg-thankYou.svg')"
 			},
 			backgroundPosition: {
