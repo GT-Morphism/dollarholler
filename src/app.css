@@ -60,7 +60,7 @@
 			"unitPrice qty amount";
 	}
 
-	@media (min-width: 640px) {
+	@media print, (min-width: 640px) {
 		.invoice-line-item {
 			grid-template-areas: "description unitPrice qty amount trash";
 		}

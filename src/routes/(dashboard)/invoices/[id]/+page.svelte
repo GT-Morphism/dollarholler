@@ -40,7 +40,7 @@
 </script>
 
 <div
-	class="fixed z-0 mb-16 flex w-full max-w-screen-lg flex-col justify-between gap-y-5 px-4 md:flex-row lg:px-0"
+	class="fixed z-0 mb-16 flex w-full max-w-screen-lg flex-col justify-between gap-y-5 px-4 print:hidden md:flex-row lg:px-0"
 >
 	<h1 class="text-3xl font-bold text-daisyBush">Invoice</h1>
 	<div class="flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
@@ -52,9 +52,9 @@
 </div>
 
 <div
-	class="relative top-32 z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-8 px-5 shadow-invoice md:py-16 md:px-32"
+	class="relative top-32 z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-8 px-5 shadow-invoice print:top-0 print:py-0 print:shadow-none md:py-16 md:px-32"
 >
-	<div class="col-span-6 sm:col-span-3">
+	<div class="col-span-6 print:col-span-6 sm:col-span-3">
 		<img
 			src="/images/logo.png"
 			srcset="/images/logo@2x.png 2x, /images/logo.png 1x"
@@ -62,7 +62,7 @@
 		/>
 	</div>
 
-	<div class="col-span-6 pt-4 sm:col-span-2 sm:col-start-5">
+	<div class="col-span-6 pt-4 print:col-span-3 sm:col-span-2 sm:col-start-5">
 		<div class="label">From</div>
 		{#if $settings && $settings.myName && $settings.street && $settings.city && $settings.state && $settings.zip}
 			<p>
@@ -80,8 +80,8 @@
 		{/if}
 	</div>
 
-	<div class="col-span-6 sm:col-span-3">
-		<div class="label">Bill To:</div>
+	<div class="col-span-6 print:col-span-3 sm:col-span-3">
+		<div class="label">Bill To</div>
 		<p>
 			<strong>{data.client.name}</strong><br />
 			{data.client.email}<br />
@@ -91,36 +91,36 @@
 		</p>
 	</div>
 
-	<div class="col-span-6 sm:col-span-2 sm:col-start-5">
+	<div class="col-span-6 print:col-span-1 sm:col-span-2 sm:col-start-5">
 		<div class="label">Invoice ID</div>
 		<p>{data.invoiceNumber}</p>
 	</div>
 
-	<div class="col-span-3">
+	<div class="col-span-3 print:col-span-2">
 		<div class="label">Due Date</div>
 		<p>{convertDate(data.dueDate)}</p>
 	</div>
 
-	<div class="col-span-3 sm:col-span-2 sm:col-start-5">
+	<div class="col-span-3 print:col-span-2 sm:col-span-2 sm:col-start-5">
 		<div class="label">Issue Date</div>
 		<p>{convertDate(data.issueDate)}</p>
 	</div>
 
-	<div class="col-span-6">
+	<div class="col-span-6 print:col-span-1">
 		<div class="label">Subject</div>
 		<p>{data.subject}</p>
 	</div>
 
-	<div class="col-span-6">
+	<div class="col-span-6 print:col-span-6">
 		<LineItemRows lineItems={data.lineItems} {isEditable} discount={data.discount} />
 	</div>
 
-	<div class="col-span-6">
+	<div class="col-span-6 print:col-span-3">
 		<div class="label">Notes</div>
 		<SvelteMarkdown source={data.notes ? data.notes : "No notes"} />
 	</div>
 
-	<div class="col-span-6">
+	<div class="col-span-6 print:col-span-3">
 		<div class="label">Terms and Conditions</div>
 		<SvelteMarkdown source={data.terms ? data.terms : "No terms apply"} />
 	</div>
