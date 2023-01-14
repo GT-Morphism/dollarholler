@@ -4,6 +4,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import { convertDate } from "$lib/utils/dateHelpers";
 	import LineItemRows from "../LineItemRows.svelte";
+	import SvelteMarkdown from "svelte-markdown";
 
 	export let data: Invoice;
 	let isEditable: boolean = false;
@@ -105,12 +106,12 @@
 
 	<div class="col-span-6">
 		<div class="label">Notes</div>
-		<p>{data.notes ? data.notes : "No notes"}</p>
+		<SvelteMarkdown source={data.notes ? data.notes : "No notes"} />
 	</div>
 
 	<div class="col-span-6">
 		<div class="label">Terms and Conditions</div>
-		<p>{data.terms ? data.terms : "No terms apply"}</p>
+		<SvelteMarkdown source={data.terms ? data.terms : "No terms apply"} />
 	</div>
 </div>
 
