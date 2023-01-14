@@ -38,9 +38,7 @@
 	class:translate-x-0={isNavShowing}
 >
 	<div class="mt-10 mb-10 md:mb-24">
-		<a href="/invoices"
-			><img src="/images/dollarholler.svg" alt="The Dollar Holler" class="mx-auto" /></a
-		>
+		<a href="/"><img src="/images/dollarholler.svg" alt="The Dollar Holler" class="mx-auto" /></a>
 	</div>
 
 	<nav>
