@@ -1,20 +1,29 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { page } from "$app/stores";
+	import SvelteMarkdown from "svelte-markdown";
 	import { settings, loadSettings } from "$lib/stores/settingsStore";
 	import Button from "$lib/components/Button.svelte";
 	import { convertDate } from "$lib/utils/dateHelpers";
 	import LineItemRows from "../LineItemRows.svelte";
-	import SvelteMarkdown from "svelte-markdown";
+	import { snackbar } from "$lib/stores/snackbarStore";
 
 	export let data: Invoice;
+
 	let isEditable: boolean = false;
+	let copyLinkLabel: string = "Copy Link";
 
 	const printInvoice = () => {
 		window.print();
 	};
 
 	const copyLink = () => {
-		console.log("copy link");
+		navigator.clipboard.writeText($page.url.href);
+
+		snackbar.send({
+			message: "Link copied to clipboard",
+			type: "success"
+		});
 	};
 
 	const sendInvoice = () => {
@@ -34,7 +43,11 @@
 	<h1 class="text-3xl font-bold text-daisyBush">Invoice</h1>
 	<div class="flex items-center gap-4">
 		<Button label="Print" style="outline" isAnimated={false} on:click={printInvoice} />
-		<Button label="Copy Link" on:click={copyLink} />
+		<Button
+			label={copyLinkLabel}
+			on:click={copyLink}
+			furtherClasses="min-w-[11rem] justify-center"
+		/>
 		<Button label="Send" on:click={sendInvoice} />
 		<Button label="Pay Invoice" on:click={payInvoice} />
 	</div>

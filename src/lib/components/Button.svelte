@@ -10,6 +10,7 @@
 		| "outline"
 		| "textOnly"
 		| "textOnlyDestructive" = "primary";
+	export let furtherClasses: string = "";
 
 	export let iconLeft: typeof SvelteComponent | null = null;
 	export let iconRight: typeof SvelteComponent | null = null;
@@ -17,7 +18,7 @@
 
 <button
 	on:click|preventDefault
-	class="button"
+	class="button {furtherClasses}"
 	class:isAnimated
 	class:primary={style === "primary"}
 	class:secondary={style === "secondary"}
