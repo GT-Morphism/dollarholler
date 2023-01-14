@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+	import { settings, loadSettings } from "$lib/stores/settingsStore";
 	import Button from "$lib/components/Button.svelte";
 	import { convertDate } from "$lib/utils/dateHelpers";
 	import LineItemRows from "../LineItemRows.svelte";
@@ -21,6 +23,10 @@
 	const payInvoice = () => {
 		console.log("Pay Invoice");
 	};
+
+	onMount(() => {
+		loadSettings();
+	});
 </script>
 
 <div class="fixed z-0 mb-16 flex w-full max-w-screen-lg justify-between">
@@ -46,11 +52,20 @@
 
 	<div class="col-span-2 col-start-5 pt-4">
 		<div class="label">From</div>
-		<p>
-			Amy Dutton<br />
-			123 Awesome Street<br />
-			Coolville, TN 54321
-		</p>
+		{#if $settings && $settings.myName && $settings.street && $settings.city && $settings.state && $settings.zip}
+			<p>
+				{$settings.myName}<br />
+				{$settings.street}<br />
+				{$settings.city}, {$settings.state}
+				{$settings.zip}
+			</p>
+		{:else}
+			<div class="center min-h-[68px] rounded bg-gallery">
+				<a href="#" class="text-stone-600 underline hover:no-underline"
+					>Add your contact information</a
+				>
+			</div>
+		{/if}
 	</div>
 
 	<div class="col-span-3">
