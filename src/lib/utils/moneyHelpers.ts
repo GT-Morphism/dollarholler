@@ -30,7 +30,7 @@ export const invoiceTotal = (
 };
 
 /**
- * Takes and return a dollar amount, formatted with commas and 2 decimal places
+ * Takes and returns a dollar amount, formatted with commas and 2 decimal places
  * @param   {number} cents
  * @returns {string}
  */
@@ -38,6 +38,16 @@ export const centsToDollars = (cents: number): string => {
 	const dollars = cents / 100;
 	const addDecimals = twoDecimals(dollars);
 	return addThousandsSeparator(addDecimals);
+};
+
+/**
+ * Takes and returns a dollar amount with 2 decimal places (without any commas)
+ * @param   {number} cents
+ * @returns {string}
+ */
+export const centsToDollarsWithoutCommas = (cents: number): string => {
+	const dollars = cents / 100;
+	return twoDecimals(dollars);
 };
 
 /**

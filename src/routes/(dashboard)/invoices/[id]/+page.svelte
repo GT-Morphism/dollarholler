@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
+	import { convertDate } from "$lib/utils/dateHelpers";
+	import LineItemRows from "../LineItemRows.svelte";
+
+	export let data: Invoice;
+	let isEditable: boolean = false;
 
 	const printInvoice = () => {
 		console.log("print invoice");
@@ -51,45 +56,46 @@
 	<div class="col-span-3">
 		<div class="label">Bill To:</div>
 		<p>
-			<strong>ZEAL</strong><br />
-			zeal@example.com<br />
-			789 Stellar Street<br />
-			Anywhereville, CA 56789
+			<strong>{data.client.name}</strong><br />
+			{data.client.email}<br />
+			{data.client.street}<br />
+			{data.client.city}, {data.client.state}
+			{data.client.zip}
 		</p>
 	</div>
 
 	<div class="col-span-2 col-start-5">
 		<div class="label">Invoice ID</div>
-		<p>12348</p>
+		<p>{data.invoiceNumber}</p>
 	</div>
 
 	<div class="col-span-3">
 		<div class="label">Due Date</div>
-		<p>10 / 6 / 2022</p>
+		<p>{convertDate(data.dueDate)}</p>
 	</div>
 
 	<div class="col-span-2 col-start-5">
 		<div class="label">Issue Date</div>
-		<p>7 / 6 / 2022</p>
+		<p>{convertDate(data.issueDate)}</p>
 	</div>
 
 	<div class="col-span-6">
 		<div class="label">Subject</div>
-		<p>Website</p>
+		<p>{data.subject}</p>
 	</div>
 
 	<div class="col-span-6">
-		<!-- Line Items -->
+		<LineItemRows lineItems={data.lineItems} {isEditable} discount={data.discount} />
 	</div>
 
 	<div class="col-span-6">
 		<div class="label">Notes</div>
-		<p>lorem ipsum</p>
+		<p>{data.notes ? data.notes : "No notes"}</p>
 	</div>
 
 	<div class="col-span-6">
 		<div class="label">Terms and Conditions</div>
-		<p>lorem ipsum</p>
+		<p>{data.terms ? data.terms : "No terms apply"}</p>
 	</div>
 </div>
 

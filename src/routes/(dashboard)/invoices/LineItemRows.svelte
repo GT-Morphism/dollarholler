@@ -3,13 +3,19 @@
 	import Button from "$lib/components/Button.svelte";
 	import CircledAmount from "$lib/components/CircledAmount.svelte";
 	import LineItemRow from "./LineItemRow.svelte";
-	import { centsToDollars, sumLineItems, twoDecimals } from "$lib/utils/moneyHelpers";
+	import {
+		addThousandsSeparator,
+		centsToDollars,
+		sumLineItems,
+		twoDecimals
+	} from "$lib/utils/moneyHelpers";
 
 	export let lineItems: LineItem[] | undefined = undefined;
+	export let discount: number | undefined = 0;
+	export let isEditable: boolean = true;
 
 	let dispatch = createEventDispatcher();
 	let subtotal = "0.00";
-	export let discount: number | undefined = 0;
 	let discountedAmount: string = "0.00";
 	let totalAmount: string = "0.00";
 
@@ -21,7 +27,12 @@
 		discountedAmount = centsToDollars(sumLineItems(lineItems) * (discount / 100));
 	}
 
-	$: totalAmount = twoDecimals(Number(subtotal) - Number(discountedAmount));
+	$: {
+		const plainSubtotal = subtotal.replace(",", "");
+		totalAmount = addThousandsSeparator(
+			twoDecimals(Number(plainSubtotal) - Number(discountedAmount))
+		);
+	}
 </script>
 
 <!-- <svelte:window
@@ -50,20 +61,23 @@
 			on:updateLineItem
 			canDelete={index > 0}
 			isRequired={index === 0}
+			{isEditable}
 		/>
 	{/each}
 {/if}
 
 <div class="invoice-line-item">
 	<div class="col-span-1 sm:col-span-2">
-		<Button
-			label="+ Line Item"
-			style="textOnly"
-			isAnimated={false}
-			on:click={() => {
-				dispatch("addLineItem");
-			}}
-		/>
+		{#if isEditable}
+			<Button
+				label="+ Line Item"
+				style="textOnly"
+				isAnimated={false}
+				on:click={() => {
+					dispatch("addLineItem");
+				}}
+			/>
+		{/if}
 	</div>
 	<div class="py-5 text-right font-bold text-monsoon">Subtotal</div>
 	<div class="py-5 text-right font-mono">${subtotal}</div>
@@ -77,6 +91,7 @@
 			name="discount"
 			min="0"
 			max="100"
+			disabled={!isEditable}
 			bind:value={discount}
 			class="line-item h-10 w-full border-b-2 border-dashed border-stone-300 pr-4 text-right focus:border-solid focus:border-lavenderIndigo focus:outline-none"
 		/>
@@ -87,7 +102,7 @@
 
 <div class="invoice-line-item">
 	<div class="col-span-3 sm:col-span-6">
-		<CircledAmount label="Total: " amount={totalAmount} />
+		<CircledAmount label="Total: " amount={"$" + totalAmount} />
 	</div>
 </div>
 
