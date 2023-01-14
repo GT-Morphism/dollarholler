@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterNavigate, goto } from "$app/navigation";
 	import ArrowLeftIcon from "$lib/components/Icon/ArrowLeftIcon.svelte";
+	import Snackbar from "$lib/components/Snackbar.svelte";
 	import type { AfterNavigate } from "@sveltejs/kit";
 
 	let previousPage: string | undefined = undefined;
@@ -26,3 +27,5 @@
 		<slot />
 	</main>
 </div>
+
+<Snackbar />
