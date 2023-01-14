@@ -44,7 +44,7 @@
 
 <style lang="postcss">
 	.isAnimated {
-		@apply translate-y-0 shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover;
+		@apply translate-y-0 shadow-colored transition-all hover:-translate-y-0.5 hover:shadow-coloredHover;
 	}
 
 	.primary {

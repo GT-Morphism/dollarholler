@@ -43,11 +43,7 @@
 	<h1 class="text-3xl font-bold text-daisyBush">Invoice</h1>
 	<div class="flex items-center gap-4">
 		<Button label="Print" style="outline" isAnimated={false} on:click={printInvoice} />
-		<Button
-			label={copyLinkLabel}
-			on:click={copyLink}
-			furtherClasses="min-w-[11rem] justify-center"
-		/>
+		<Button label={copyLinkLabel} on:click={copyLink} />
 		<Button label="Send" on:click={sendInvoice} />
 		<Button label="Pay Invoice" on:click={payInvoice} />
 	</div>
