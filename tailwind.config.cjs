@@ -13,7 +13,8 @@ module.exports = {
 				circle: "url('/images/circle.svg')",
 				arrowRightUp: "url('/images/arrowRightUp.svg')",
 				arrowLeftUp: "url('/images/arrowLeftUp.svg')",
-				chevronDown: "url('/images/chevronDown.svg')"
+				chevronDown: "url('/images/chevronDown.svg')",
+				thankYou: "url('/images/bg-thankYou.svg')"
 			},
 			backgroundPosition: {
 				"right-center": "97% center"
