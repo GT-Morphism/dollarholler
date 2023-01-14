@@ -243,7 +243,7 @@
 	<div class="field col-span-4 flex justify-end gap-x-5">
 		<Button style="secondary" label="Cancel" isAnimated={false} on:click={closePanel} />
 		<button
-			class="button translate-y-0 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover"
+			class="button translate-y-0 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-0.5 hover:shadow-coloredHover"
 			type="submit">Save</button
 		>
 	</div>
