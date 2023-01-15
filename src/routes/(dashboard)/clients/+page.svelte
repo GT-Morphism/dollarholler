@@ -6,6 +6,10 @@
 	import ClientRow from "./ClientRow.svelte";
 	import ClientRowHeader from "./ClientRowHeader.svelte";
 	import BlankStateClients from "./BlankStateClients.svelte";
+	import SlidePanel from "$lib/components/SlidePanel.svelte";
+	import ClientForm from "./ClientForm.svelte";
+
+	let isClientFormShowing: boolean = false;
 
 	onMount(() => {
 		loadClients();
@@ -31,7 +35,7 @@
 		<Button
 			label="+ Client"
 			on:click={() => {
-				alert("cool");
+				isClientFormShowing = true;
 			}}
 		/>
 	</div>
@@ -54,3 +58,19 @@
 		</div>
 	{/if}
 </div>
+
+<!-- add client slide panel -->
+{#if isClientFormShowing}
+	<SlidePanel
+		bind:isVisible={isClientFormShowing}
+		on:click={() => {
+			isClientFormShowing = false;
+		}}
+	>
+		<ClientForm
+			closePanel={() => {
+				isClientFormShowing = false;
+			}}
+		/>
+	</SlidePanel>
+{/if}
