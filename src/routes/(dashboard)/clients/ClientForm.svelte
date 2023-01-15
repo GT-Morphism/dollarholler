@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
 	import CheckIcon from "$lib/components/Icon/CheckIcon.svelte";
-	import { addClient } from "$lib/stores/clientStore";
+	import TrashIcon from "$lib/components/Icon/TrashIcon.svelte";
+	import { addClient, updateClient } from "$lib/stores/clientStore";
+	import { snackbar } from "$lib/stores/snackbarStore";
 
 	import { states } from "$lib/utils/states";
 
@@ -10,7 +12,19 @@
 	export let client: Client = {} as Client;
 
 	const handleSubmit = () => {
-		addClient(client);
+		if (formState === "create") {
+			addClient(client);
+			snackbar.send({
+				message: `Client ${client.name} successfully created`,
+				type: "success"
+			});
+		} else {
+			updateClient(client);
+			snackbar.send({
+				message: "Client successfully updated",
+				type: "success"
+			});
+		}
 		closePanel();
 	};
 </script>
@@ -20,7 +34,7 @@
 	{#if formState === "create"}
 		Add new Client
 	{:else}
-		Edit existing Client
+		Edit {client.name}
 	{/if}
 </h2>
 
@@ -68,7 +82,15 @@
 		<input bind:value={client.zip} type="text" name="zip" minlength="5" />
 	</div>
 
-	<div class="col-span-6 mt-5 flex justify-end gap-x-4">
+	<!-- delete button -->
+	<div class="col-span-3 mt-5 self-center">
+		{#if formState === "edit"}
+			<Button style="textOnlyDestructive" label="Delete" isAnimated={false} iconLeft={TrashIcon} />
+		{/if}
+	</div>
+
+	<!-- cancel & save button -->
+	<div class="col-span-3 mt-5 flex justify-end gap-x-4">
 		<Button style="secondary" label="Cancel" isAnimated={false} on:click={closePanel} />
 		<button
 			class="button flex translate-y-0 gap-x-2 bg-lavenderIndigo text-white shadow-colored transition-all hover:-translate-y-0.5 hover:shadow-coloredHover"

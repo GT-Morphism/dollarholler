@@ -8,10 +8,13 @@
 	import ArchiveIcon from "$lib/components/Icon/ArchiveIcon.svelte";
 	import Tag from "$lib/components/Tag.svelte";
 	import { centsToDollars, sumInvoices } from "$lib/utils/moneyHelpers";
+	import SlidePanel from "$lib/components/SlidePanel.svelte";
+	import ClientForm from "./ClientForm.svelte";
 
 	export let client: Client;
 
-	let isAdditionalMenuShowing = false;
+	let isAdditionalMenuShowing: boolean = false;
+	let isClientFormShowing: boolean = false;
 
 	const receivedInvoices = (): number => {
 		if (client?.invoices) {
@@ -38,6 +41,11 @@
 		}
 
 		return 0;
+	};
+
+	const handleClientEdit = () => {
+		isClientFormShowing = true;
+		isAdditionalMenuShowing = false;
 	};
 </script>
 
@@ -67,7 +75,7 @@
 		{#if isAdditionalMenuShowing}
 			<AdditionalOptions
 				options={[
-					{ label: "Edit", icon: EditIcon, onClick: () => console.log("editing"), disabled: false },
+					{ label: "Edit", icon: EditIcon, onClick: handleClientEdit, disabled: false },
 					{
 						label: "Activate",
 						icon: ActivateIcon,
@@ -97,6 +105,24 @@
 		{/if}
 	</div>
 </div>
+
+<!-- slide panel -->
+{#if isClientFormShowing}
+	<SlidePanel
+		bind:isVisible={isClientFormShowing}
+		on:click={() => {
+			isClientFormShowing = false;
+		}}
+	>
+		<ClientForm
+			formState="edit"
+			{client}
+			closePanel={() => {
+				isClientFormShowing = false;
+			}}
+		/>
+	</SlidePanel>
+{/if}
 
 <style lang="postcss">
 	.client-row {
