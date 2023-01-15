@@ -11,8 +11,6 @@
 
 	export let client: Client;
 
-	console.log(client);
-
 	let isAdditionalMenuShowing = false;
 
 	const receivedInvoices = (): number => {

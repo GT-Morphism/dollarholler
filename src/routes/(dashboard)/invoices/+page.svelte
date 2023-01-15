@@ -5,7 +5,7 @@
 	import Search from "$lib/components/Search.svelte";
 	import InvoiceRow from "./InvoiceRow.svelte";
 	import { centsToDollars, sumInvoices } from "$lib/utils/moneyHelpers";
-	import BlankState from "./BlankState.svelte";
+	import BlankStateInvoices from "./BlankStateInvoices.svelte";
 	import InvoiceRowHeader from "./InvoiceRowHeader.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import SlidePanel from "$lib/components/SlidePanel.svelte";
@@ -46,7 +46,7 @@
 	{#if $invoices === null}
 		Loading...
 	{:else if $invoices.length <= 0}
-		<BlankState />
+		<BlankStateInvoices />
 	{:else}
 		<!-- list of invoices -->
 		<!-- header -->
