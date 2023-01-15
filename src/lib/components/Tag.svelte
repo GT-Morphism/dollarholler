@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let label: "draft" | "sent" | "current" | "late" | "paid" | "archive" = "draft";
 
-	export let className = "";
+	export let className: string = "";
 </script>
 
 <div
