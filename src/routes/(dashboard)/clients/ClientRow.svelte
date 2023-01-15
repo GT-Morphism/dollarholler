@@ -42,7 +42,9 @@
 </script>
 
 <div class="client-table client-row rounded-lg bg-white py-3 shadow-tableRow lg:py-6">
-	<div class="status"><Tag className="ml-auto" label={client.clientStatus} /></div>
+	<div class="status self-center">
+		<Tag label={client.clientStatus} />
+	</div>
 	<div class="client-name truncate whitespace-nowrap text-base font-bold lg:text-xl">
 		{client.name}
 	</div>
