@@ -7,10 +7,40 @@
 	import ActivateIcon from "$lib/components/Icon/ActivateIcon.svelte";
 	import ArchiveIcon from "$lib/components/Icon/ArchiveIcon.svelte";
 	import Tag from "$lib/components/Tag.svelte";
+	import { centsToDollars, sumInvoices } from "$lib/utils/moneyHelpers";
 
 	export let client: Client;
 
+	console.log(client);
+
 	let isAdditionalMenuShowing = false;
+
+	const receivedInvoices = (): number => {
+		if (client?.invoices) {
+			// find invoices that have been paid
+			const paidInvoices: Invoice[] = client.invoices.filter(
+				(invoice: Invoice) => invoice.invoiceStatus === "paid"
+			);
+
+			// get the sum of all them
+			return sumInvoices(paidInvoices);
+		}
+
+		return 0;
+	};
+
+	const balanceInvoices = (): number => {
+		if (client?.invoices) {
+			// find invoices that have not been paid
+			const notPaidInvoices: Invoice[] = client.invoices.filter(
+				(invoice: Invoice) => invoice.invoiceStatus !== "paid"
+			);
+
+			return sumInvoices(notPaidInvoices);
+		}
+
+		return 0;
+	};
 </script>
 
 <div class="client-table client-row rounded-lg bg-white py-3 shadow-tableRow lg:py-6">
@@ -18,8 +48,12 @@
 	<div class="client-name truncate whitespace-nowrap text-base font-bold lg:text-xl">
 		{client.name}
 	</div>
-	<div class="received font-mono text-sm font-bold lg:text-right lg:text-lg">$504.00</div>
-	<div class="balance text-right font-mono text-sm font-bold text-scarlet lg:text-lg">$240.00</div>
+	<div class="received font-mono text-sm font-bold lg:text-right lg:text-lg">
+		${centsToDollars(receivedInvoices())}
+	</div>
+	<div class="balance text-right font-mono text-sm font-bold text-scarlet lg:text-lg">
+		${centsToDollars(balanceInvoices())}
+	</div>
 	<div class="view relative hidden items-center justify-center lg:flex">
 		<a href="#" class="text-pastelPurple hover:text-daisyBush"><ViewIcon /></a>
 	</div>

@@ -85,8 +85,8 @@ export const addThousandsSeparator = (myNum: string): string => {
 export const sumInvoices = (invoices: Invoice[] | undefined): number => {
 	if (!invoices) return 0;
 
-	return invoices.reduce((prevValue, curValue) => {
-		const invoiceSum = sumLineItems(curValue.lineItems);
+	return invoices.reduce((prevValue: number, curValue: Invoice) => {
+		const invoiceSum = invoiceTotal(curValue.lineItems, curValue.discount);
 		return invoiceSum + prevValue;
 	}, 0);
 };
