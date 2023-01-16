@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { loadInvoices } from "$lib/stores/invoiceStore";
-	import { onMount } from "svelte";
 	import CircledAmount from "$lib/components/CircledAmount.svelte";
 	import Search from "$lib/components/Search.svelte";
 	import InvoiceRow from "../../invoices/InvoiceRow.svelte";
@@ -12,6 +10,7 @@
 
 	import EditIcon from "$lib/components/Icon/EditIcon.svelte";
 	import ClientForm from "../ClientForm.svelte";
+	import { isLate } from "$lib/utils/dateHelpers";
 
 	export let data: Client;
 
@@ -19,13 +18,49 @@
 	let isEditingClient: boolean = false;
 	let emptyClient: Client = {} as Client;
 
-	onMount(() => {
-		loadInvoices();
-	});
-
 	const editClient = () => {
 		isEditingClient = true;
 		isClientFormShowing = true;
+	};
+
+	const getDraft = (): string => {
+		if (!data.invoices || data.invoices.length < 1) return "0.00";
+
+		const draftInvoices = data.invoices.filter(
+			(invoice: Invoice) => invoice.invoiceStatus === "draft"
+		);
+
+		return centsToDollars(sumInvoices(draftInvoices));
+	};
+
+	const getPaid = (): string => {
+		if (!data.invoices || data.invoices.length < 1) return "0.00";
+
+		const paidInvoices = data.invoices.filter(
+			(invoice: Invoice) => invoice.invoiceStatus === "paid"
+		);
+
+		return centsToDollars(sumInvoices(paidInvoices));
+	};
+
+	const getOverdue = (): string => {
+		if (!data.invoices || data.invoices.length < 1) return "0.00";
+
+		const overdueInvoices = data.invoices.filter(
+			(invoice: Invoice) => invoice.invoiceStatus === "sent" && isLate(invoice.dueDate)
+		);
+
+		return centsToDollars(sumInvoices(overdueInvoices));
+	};
+
+	const getOutstanding = (): string => {
+		if (!data.invoices || data.invoices.length < 1) return "0.00";
+
+		const outstandingInvoices = data.invoices.filter(
+			(invoice: Invoice) => invoice.invoiceStatus === "sent" && !isLate(invoice.dueDate)
+		);
+
+		return centsToDollars(sumInvoices(outstandingInvoices));
 	};
 </script>
 
@@ -69,19 +104,19 @@
 <div class="mb-10 grid gap-4 rounded-lg bg-gallery py-7 px-10 lg:grid-cols-4">
 	<div class="summary-block">
 		<div class="label">Total Overdue</div>
-		<div class="number"><sup>$</sup>300.00</div>
+		<div class="number"><sup>$</sup>{getOverdue()}</div>
 	</div>
 	<div class="summary-block">
 		<div class="label">Total Outstanding</div>
-		<div class="number"><sup>$</sup>300.00</div>
+		<div class="number"><sup>$</sup>{getOutstanding()}</div>
 	</div>
 	<div class="summary-block">
 		<div class="label">Total Draft</div>
-		<div class="number"><sup>$</sup>300.00</div>
+		<div class="number"><sup>$</sup>{getDraft()}</div>
 	</div>
 	<div class="summary-block">
 		<div class="label">Total Paid</div>
-		<div class="number"><sup>$</sup>300.00</div>
+		<div class="number"><sup>$</sup>{getPaid()}</div>
 	</div>
 </div>
 
@@ -141,6 +176,6 @@
 	}
 
 	.number {
-		@apply text-[2.2rem] font-black text-purple;
+		@apply truncate text-[2.2rem] font-black text-purple;
 	}
 </style>
