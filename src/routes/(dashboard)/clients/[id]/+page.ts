@@ -1,10 +1,10 @@
-import { getInvoiceById } from "$lib/stores/invoiceStore";
+import { getClientById } from "$lib/stores/clientStore";
 import type { PageLoad } from "./$types";
 
 export const load = (({ params }) => {
 	const id = params.id;
 
-	const invoice = getInvoiceById(id);
+	const client = getClientById(id);
 
-	return invoice;
+	return client;
 }) satisfies PageLoad;
