@@ -58,7 +58,11 @@
 				>
 			</li>
 			<li class="mb-6">
-				<a class={navBarLinkClasses} href="#">Settings</a>
+				<a
+					class={navBarLinkClasses}
+					class:active={$page.url.pathname === "/settings"}
+					href="/settings">Settings</a
+				>
 			</li>
 			<li class="mb-6">
 				<a class={navBarLinkClasses} href="#">Logout</a>
