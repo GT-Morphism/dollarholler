@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fly } from "svelte/transition";
 	import { afterNavigate, goto } from "$app/navigation";
 	import ArrowLeftIcon from "$lib/components/Icon/ArrowLeftIcon.svelte";
 	import Snackbar from "$lib/components/Snackbar.svelte";
@@ -22,7 +23,7 @@
 <div
 	class="h-full min-h-screen w-screen bg-whisper pt-16 pb-32 print:bg-transparent print:pt-0 print:pb-0"
 >
-	<main class="mx-auto min-h-screen max-w-screen-lg">
+	<main transition:fly={{ y: 500, duration: 400 }} class="mx-auto min-h-screen max-w-screen-lg">
 		<a
 			href={previousPage ? previousPage : "/invoices"}
 			class="fixed top-7 left-7 text-pastelPurple print:hidden"><ArrowLeftIcon /></a
