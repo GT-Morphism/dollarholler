@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from "svelte/transition";
 	import Cancel from "./Icon/Cancel.svelte";
 	import Overlay from "./Overlay.svelte";
 	import Portal from "./Portal.svelte";
@@ -17,7 +18,7 @@
 {#if isVisible}
 	<Portal>
 		<Overlay overlayZIndex="z-modalOverlay" />
-		<div class="center fixed inset-0 z-modal">
+		<div transition:fade class="center fixed inset-0 z-modal">
 			<div class="relative w-full max-w-[450px] rounded-lg bg-white px-10 py-7">
 				<button
 					on:click={() => {
