@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from "svelte/transition";
 	export let overlayZIndex: string = "z-overlay";
 </script>
 
@@ -10,4 +11,4 @@
 	</style>
 </svelte:head>
 
-<div class="fixed inset-0 {overlayZIndex} bg-blueGem opacity-60" />
+<div transition:fade class="fixed inset-0 {overlayZIndex} bg-blueGem opacity-60" />

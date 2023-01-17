@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fly } from "svelte/transition";
 	import ArrowLeftIcon from "./Icon/ArrowLeftIcon.svelte";
 	import Overlay from "./Overlay.svelte";
 	import Portal from "./Portal.svelte";
@@ -16,6 +17,7 @@
 	<Portal>
 		<Overlay />
 		<div
+			transition:fly={{ x: 1000, duration: 500 }}
 			class="fixed right-0 top-0 z-slidePanel h-screen w-full overflow-y-scroll bg-white px-5 pt-16 shadow-slidePanel lg:w-3/4 lg:py-20 lg:px-32"
 		>
 			<button
