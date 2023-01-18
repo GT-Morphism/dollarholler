@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fade } from "svelte/transition";
+	import { clickOutside } from "$lib/actions/ClickOutside";
 	import Cancel from "./Icon/Cancel.svelte";
 	import Overlay from "./Overlay.svelte";
 	import Portal from "./Portal.svelte";
@@ -19,7 +20,12 @@
 	<Portal>
 		<Overlay overlayZIndex="z-modalOverlay" />
 		<div transition:fade class="center fixed inset-0 z-modal">
-			<div class="relative w-full max-w-[450px] rounded-lg bg-white px-10 py-7">
+			<div
+				class="relative w-full max-w-[450px] rounded-lg bg-white px-10 py-7"
+				use:clickOutside={() => {
+					isVisible = false;
+				}}
+			>
 				<button
 					on:click={() => {
 						isVisible = false;
