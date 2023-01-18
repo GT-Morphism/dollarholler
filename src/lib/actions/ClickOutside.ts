@@ -1,10 +1,5 @@
+import assertsIsNode from "$lib/utils/assertsIsNode";
 import type { Action } from "svelte/action";
-
-function assertsIsNode(e: EventTarget | null): asserts e is Node {
-	if (!e || !("nodeType" in e)) {
-		throw new Error("Node expected");
-	}
-}
 
 export const clickOutside: Action<HTMLElement, () => void> = (node, runFunction) => {
 	const handleClick = (event: MouseEvent | TouchEvent) => {
