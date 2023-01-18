@@ -116,7 +116,7 @@
 	</div>
 
 	<!-- swipe to reveal -->
-	<div class="absolute inset-0 z-rowActions flex items-center justify-around">
+	<div class="absolute inset-0 z-rowActions flex items-center justify-around lg:hidden">
 		<button
 			class="action-button"
 			on:click={() => {
