@@ -6,13 +6,13 @@
 	import Portal from "./Portal.svelte";
 
 	export let isVisible = false;
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === "Escape") isVisible = false;
+	}
 </script>
 
-<svelte:window
-	on:keydown={(event) => {
-		if (event.key === "Escape") isVisible = false;
-	}}
-/>
+<svelte:window on:keydown={handleKeyDown} />
 
 {#if isVisible}
 	<Portal>
