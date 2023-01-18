@@ -9,24 +9,39 @@ export const swipe: Action<HTMLElement, SwipeProps> = (node, params) => {
 	let x: number;
 	// needed to store the event.clientX value upon clicking on an invoice row;
 	let startingX: number;
-	const elementWidth = node.clientWidth;
+	let elementWidth: number = node.clientWidth;
 	const coordinates = spring({ x: 0, y: 0 }, { stiffness: 0.2, damping: 0.4 });
 
-	function resetCard() {
-		coordinates.update(() => {
-			return { x: 0, y: 0 };
-		});
+	// #region add swipe funtioncality only on mobile devices
+	function isMobileBreakpoint() {
+		const mediaQuery = window.matchMedia("(max-width: 1024px)");
+
+		if (mediaQuery.matches) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	function outOfView() {
-		node.dispatchEvent(new CustomEvent("outOfView"));
+	// on page load
+	if (isMobileBreakpoint()) {
+		node.addEventListener("mousedown", handleMouseDown);
 	}
+
+	// on window resize
+	window.addEventListener("resize", () => {
+		elementWidth = node.clientWidth;
+		if (isMobileBreakpoint()) {
+			node.addEventListener("mousedown", handleMouseDown);
+		} else {
+			node.removeEventListener("mousedown", handleMouseDown);
+		}
+	});
+	// #endregion
 
 	coordinates.subscribe(($coords) => {
 		node.style.transform = `translate3d(${$coords.x}px, 0, 0)`;
 	});
-
-	node.addEventListener("mousedown", handleMouseDown);
 
 	function handleMouseDown(event: MouseEvent) {
 		console.log("started");
@@ -83,6 +98,16 @@ export const swipe: Action<HTMLElement, SwipeProps> = (node, params) => {
 				y: 0
 			};
 		});
+	}
+
+	function resetCard() {
+		coordinates.update(() => {
+			return { x: 0, y: 0 };
+		});
+	}
+
+	function outOfView() {
+		node.dispatchEvent(new CustomEvent("outOfView"));
 	}
 
 	return {
