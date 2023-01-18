@@ -144,7 +144,7 @@
 			Trash
 		</button>
 
-		<a href="/invoices/{invoice.id}" class="action-button" on:click={handleDelete}>
+		<a href="/invoices/{invoice.id}" class="action-button">
 			<ViewIcon width={32} height={32} />
 			View
 		</a>
@@ -173,10 +173,6 @@
 {/if}
 
 <style lang="postcss">
-	.action-button {
-		@apply flex cursor-pointer flex-col items-center justify-center font-bold text-daisyBush;
-	}
-
 	.invoice-row {
 		grid-template-areas:
 			"invoiceNumber invoiceNumber"
