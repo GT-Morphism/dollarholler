@@ -13,6 +13,7 @@
 	import SlidePanel from "$lib/components/SlidePanel.svelte";
 	import InvoiceForm from "./InvoiceForm.svelte";
 	import ConfirmDelete from "./ConfirmDelete.svelte";
+	import Cancel from "$lib/components/Icon/Cancel.svelte";
 
 	export let invoice: Invoice;
 	let isAdditionalMenuShowing: boolean = false;
@@ -52,58 +53,92 @@
 	};
 </script>
 
-<div
-	class="invoice-table invoice-row items-center rounded-lg bg-white py-3 shadow-tableRow lg:py-6"
-	use:swipe
->
-	<div class="status"><Tag label={getInvoiceLable()} className="ml-auto lg:ml-0" /></div>
-	<div class="dueDate text-sm lg:text-lg">{convertDate(invoice.dueDate)}</div>
-	<div class="invoiceNumber text-sm lg:text-lg">{invoice.invoiceNumber}</div>
-	<div class="clientName truncate text-base font-bold lg:text-xl">
-		{invoice.client.name}
-	</div>
-	<div class="amount text-right font-mono text-sm font-bold lg:text-lg">
-		${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
-	</div>
-	<div class="lg:center viewButton hidden text-sm lg:text-lg">
-		<a href="/invoices/{invoice.id}" class="text-pastelPurple hover:text-daisyBush"><ViewIcon /></a>
-	</div>
+<div class="relative">
 	<div
-		class="lg:center moreButton relative hidden text-sm lg:text-lg"
-		use:clickOutside={() => {
-			isAdditionalMenuShowing = false;
-		}}
+		class="invoice-table invoice-row relative z-row items-center rounded-lg bg-white py-3 shadow-tableRow lg:py-6"
+		use:swipe
 	>
-		<button
-			class="text-pastelPurple hover:text-daisyBush"
-			on:click={() => {
-				isAdditionalMenuShowing = !isAdditionalMenuShowing;
-			}}><ThreeDotsIcon /></button
+		<div class="status"><Tag label={getInvoiceLable()} className="ml-auto lg:ml-0" /></div>
+		<div class="dueDate text-sm lg:text-lg">{convertDate(invoice.dueDate)}</div>
+		<div class="invoiceNumber text-sm lg:text-lg">{invoice.invoiceNumber}</div>
+		<div class="clientName truncate text-base font-bold lg:text-xl">
+			{invoice.client.name}
+		</div>
+		<div class="amount text-right font-mono text-sm font-bold lg:text-lg">
+			${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
+		</div>
+		<div class="lg:center viewButton hidden text-sm lg:text-lg">
+			<a href="/invoices/{invoice.id}" class="text-pastelPurple hover:text-daisyBush"
+				><ViewIcon /></a
+			>
+		</div>
+		<div
+			class="lg:center moreButton relative hidden text-sm lg:text-lg"
+			use:clickOutside={() => {
+				isAdditionalMenuShowing = false;
+			}}
 		>
-		{#if isAdditionalMenuShowing}
-			<AdditionalOptions
-				options={[
-					{
-						label: "Send",
-						icon: SendIcon,
-						onClick: handleSendInvoice,
-						disabled: isOptionsDisabled
-					},
-					{
-						label: "Edit",
-						icon: EditIcon,
-						onClick: handleEdit,
-						disabled: isOptionsDisabled
-					},
-					{
-						label: "Delete",
-						icon: TrashIcon,
-						onClick: handleDelete,
-						disabled: false
-					}
-				]}
-			/>
+			<button
+				class="text-pastelPurple hover:text-daisyBush"
+				on:click={() => {
+					isAdditionalMenuShowing = !isAdditionalMenuShowing;
+				}}><ThreeDotsIcon /></button
+			>
+			{#if isAdditionalMenuShowing}
+				<AdditionalOptions
+					options={[
+						{
+							label: "Send",
+							icon: SendIcon,
+							onClick: handleSendInvoice,
+							disabled: isOptionsDisabled
+						},
+						{
+							label: "Edit",
+							icon: EditIcon,
+							onClick: handleEdit,
+							disabled: isOptionsDisabled
+						},
+						{
+							label: "Delete",
+							icon: TrashIcon,
+							onClick: handleDelete,
+							disabled: false
+						}
+					]}
+				/>
+			{/if}
+		</div>
+	</div>
+
+	<!-- swipe to reveal -->
+	<div class="absolute inset-0 z-rowActions flex items-center justify-around">
+		<button class="action-button">
+			<Cancel width={32} height={32} />
+			Cancel
+		</button>
+
+		{#if !isOptionsDisabled}
+			<button class="action-button" on:click={handleEdit}>
+				<EditIcon width={32} height={32} />
+				Edit
+			</button>
+
+			<button class="action-button" on:click={handleSendInvoice}>
+				<SendIcon width={32} height={32} />
+				Send
+			</button>
 		{/if}
+
+		<button class="action-button" on:click={handleDelete}>
+			<TrashIcon width={32} height={32} />
+			Trash
+		</button>
+
+		<a href="/invoices/{invoice.id}" class="action-button" on:click={handleDelete}>
+			<ViewIcon width={32} height={32} />
+			View
+		</a>
 	</div>
 </div>
 
@@ -129,6 +164,10 @@
 {/if}
 
 <style lang="postcss">
+	.action-button {
+		@apply flex cursor-pointer flex-col items-center justify-center font-bold text-daisyBush;
+	}
+
 	.invoice-row {
 		grid-template-areas:
 			"invoiceNumber invoiceNumber"
