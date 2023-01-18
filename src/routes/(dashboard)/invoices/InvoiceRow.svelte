@@ -20,6 +20,7 @@
 	let isOptionsDisabled: boolean = false;
 	let isModalShowing: boolean = false;
 	let isInvoiceFormShowing: boolean = false;
+	let triggerReset: boolean = false;
 
 	const handleSendInvoice = () => {
 		console.log("sending");
@@ -56,7 +57,10 @@
 <div class="relative">
 	<div
 		class="invoice-table invoice-row relative z-row items-center rounded-lg bg-white py-3 shadow-tableRow lg:py-6"
-		use:swipe
+		use:swipe={{ triggerReset }}
+		on:outOfView={() => {
+			triggerReset = false;
+		}}
 	>
 		<div class="status"><Tag label={getInvoiceLable()} className="ml-auto lg:ml-0" /></div>
 		<div class="dueDate text-sm lg:text-lg">{convertDate(invoice.dueDate)}</div>
@@ -113,7 +117,12 @@
 
 	<!-- swipe to reveal -->
 	<div class="absolute inset-0 z-rowActions flex items-center justify-around">
-		<button class="action-button">
+		<button
+			class="action-button"
+			on:click={() => {
+				triggerReset = true;
+			}}
+		>
 			<Cancel width={32} height={32} />
 			Cancel
 		</button>
