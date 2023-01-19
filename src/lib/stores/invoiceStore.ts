@@ -1,14 +1,33 @@
+import supabase from "$lib/utils/supabase";
 import { writable } from "svelte/store";
-import data from "../../seed.json";
 
 export const invoices = writable<Invoice[]>([]);
 
-export const loadInvoices = () => {
-	invoices.set(data.invoices);
+export const loadInvoices = async () => {
+	const { data, error } = await supabase.from("invoice").select("*, client(id, name),lineItems(*)");
+
+	if (error) {
+		console.error(error);
+		return;
+	}
+
+	invoices.set(data as Invoice[]);
 };
 
-export const getInvoiceById = (id: string): Invoice | undefined => {
-	return data.invoices.find((invoice: Invoice) => invoice.id === id);
+export const getInvoiceById = async (id: string): Promise<Invoice | undefined> => {
+	const { data, error } = await supabase
+		.from("invoice")
+		.select("*, client(id, name), lineItems(*)")
+		.eq("id", id);
+
+	if (error) {
+		console.error(error);
+		return;
+	}
+
+	if (data) return data[0] as Invoice;
+
+	console.warn(`No invoice with id ${id}`);
 };
 
 export const addInvoice = (invoiceToAdd: Invoice) => {
